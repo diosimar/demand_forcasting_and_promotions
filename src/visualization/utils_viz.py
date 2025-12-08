@@ -62,3 +62,45 @@ def boxplot_per_classes(df, attribute, groupby, title=None, ticks_rotation=0, ax
     sns.boxplot(x=groupby, y=attribute, data=df, ax=ax)
     plt.title(title)
     plt.xticks(rotation=ticks_rotation)    
+
+def viz_top_n(df, vargroupby,top_n, title_agg ):
+    """
+    Grafica el plot N de atributos para cada clase.
+    
+    :param df: dataframe  con la data que  sera graficada en el boxplot.
+    :param vargroupby: nombre del atributo a ser graficado en el boxplot.
+    :param top_n: numero de  clases  top N a  graficar.
+    :param title_agg: titulo del grafico.
+    
+    """
+
+    # Generar agregado para  consolidar data
+    top_N = df.groupby(vargroupby).agg(
+    Total_importe=('Revenue', 'sum'),
+    Total_cantidad=('Quantity', 'sum')
+    ).reset_index()
+
+    top_productos_ordenado = top_N.sort_values(by='Total_importe', ascending=False)
+    # identificar el top  principal  por  cantidad y valor  facturado total
+    n = top_n
+    top_filtro = top_productos_ordenado.head(n)
+    # graficas 
+    fig, axes = plt.subplots(ncols= 1, nrows=2 , figsize = (16, 12))
+
+    # grafico de  top n    con mas  importe financiero  registrado
+    sns.barplot(x='Total_importe', y=vargroupby, data=top_filtro, ax=axes[0], palette='viridis', hue=vargroupby, legend=False)
+    axes[0].set_title(f'Top {n} de {title_agg} con mayor importe financiero')
+    axes[0].set_xlabel('importe monetario total')
+    axes[0].set_ylabel(title_agg)
+    axes[0].grid(axis='x', linestyle='--', alpha=0.7)
+
+    # grafico de top 5 de productos más vendidos
+    top_productos_cantidad = top_N.head(n).sort_values(by='Total_cantidad', ascending=False)
+    sns.barplot(x='Total_cantidad', y=vargroupby, data=top_filtro, ax=axes[1], palette='viridis', hue=vargroupby, legend=False)
+    axes[1].set_title(f'Top {n} de {title_agg} con mayor venta')
+    axes[1].set_xlabel('cantidad total')
+    axes[1].set_ylabel(title_agg)
+    axes[1].grid(axis='x', linestyle='--', alpha=0.7)
+
+    plt.tight_layout()
+    plt.show()      
