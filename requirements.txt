@@ -5,3 +5,7 @@ matplotlib==3.10.7
 plotly==6.5.0
 seaborn==0.13.2
 statsmodels==0.14.6
+scikit-learn==1.7.2
+lightgbm=4.6.0
+prophet==1.2.1
+tensorflow==2.20.0
