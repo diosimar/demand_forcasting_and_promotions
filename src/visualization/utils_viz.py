@@ -63,7 +63,7 @@ def boxplot_per_classes(df, attribute, groupby, title=None, ticks_rotation=0, ax
     plt.title(title)
     plt.xticks(rotation=ticks_rotation)    
 
-def viz_top_n(df, vargroupby,top_n, title_agg ):
+def viz_top_n(df, vargroupby,top_n, title_agg, path_result, img_nombre ):
     """
     Grafica el plot N de atributos para cada clase.
     
@@ -71,6 +71,8 @@ def viz_top_n(df, vargroupby,top_n, title_agg ):
     :param vargroupby: nombre del atributo a ser graficado en el boxplot.
     :param top_n: numero de  clases  top N a  graficar.
     :param title_agg: titulo del grafico.
+    :param path_result: Ruta de almacenamiento de la imagen
+    :param img_nombre : Nombre de la imagen formato png que se alamcenara en path_result
     
     """
 
@@ -101,6 +103,6 @@ def viz_top_n(df, vargroupby,top_n, title_agg ):
     axes[1].set_xlabel('cantidad total')
     axes[1].set_ylabel(title_agg)
     axes[1].grid(axis='x', linestyle='--', alpha=0.7)
-
+    plt.savefig(f'{path_result}\\{img_nombre}.png', dpi=300, bbox_inches= 'tight')
     plt.tight_layout()
     plt.show()      
